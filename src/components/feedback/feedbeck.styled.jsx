@@ -22,7 +22,7 @@ border-radius: 8px;
 background-color: black;
 color: white;
 font-size: 24px;
-margin-right: 10px;
+margin-right: 5px;
 `;
 
 export const BoxInfo = styled.div`
