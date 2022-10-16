@@ -30,6 +30,7 @@ class Feedback extends Component {
 
 render() {
     const buttons = Object.keys(this.state);
+    const totalFeedback = this.countTotalFeedback();
     return (
         <div>
             <Section 
@@ -39,7 +40,7 @@ render() {
             buttons={buttons} 
             onFeedback={this.clickButton}/>
             }/>
-       {this.countTotalFeedback() > 0 ? (
+       {totalFeedback > 0 ? (
         <Section 
         title="Statistic"
         children={
@@ -47,7 +48,7 @@ render() {
         good={this.state.good} 
         neutral={this.state.neutral} 
         bad={this.state.bad} 
-        total={this.countTotalFeedback()} 
+        total={totalFeedback} 
         positivePercentage={this.countPositiveFeedbackPercentage()}
         />
         }/>
