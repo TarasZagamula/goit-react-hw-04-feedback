@@ -1,65 +1,66 @@
-import React, {Component} from "react";
-import Buttons from "./feedbakButtons";
-import Statistic from "./statistic";
-import Section from "./section";
+import { useState } from 'react';
+import Buttons from './feedbakButtons';
+import Statistic from './statistic';
+import Section from './section';
 
+function Feedback() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-class Feedback extends Component {
-   
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0,
-    };
+  const countTotalFeedback = () => {
+    const total = good + neutral + bad;
+    return total;
+  };
 
-    countTotalFeedback = () => {
-        const total = Object.values(this.state).reduce((sum, a) => sum + a, 0);
-        return total
+  const countPositiveFeedbackPercentage = () => {
+    const percentage = (100 * good) / totalFeedback;
+    return percentage.toFixed(0);
+  };
+
+  const clickButton = buttonId => {
+    switch (buttonId) {
+      case 'good':
+        setGood(prev => prev + 1);
+        break;
+      case 'neutral':
+        setNeutral(prev => prev + 1);
+        break;
+      case 'bad':
+        setBad(prev => prev + 1);
+        break;
+      default:
+        return;
     }
+  };
 
-    countPositiveFeedbackPercentage = () => {
-        const percentage = (100 * this.state.good) / Object.values(this.state).reduce((sum, a) => sum + a, 0);
-        return percentage.toFixed(0) 
-    }
+  const buttons = ['good', 'neutral', 'bad'];
+  const totalFeedback = countTotalFeedback();
 
-    clickButton = buttonId => {
-        this.setState(prevState => ({
-            [buttonId]: prevState[buttonId] + 1,
-        }))
-    };
-
-render() {
-    const buttons = Object.keys(this.state);
-    const totalFeedback = this.countTotalFeedback();
-    return (
-        <div>
-            <Section 
-            title="Please leave feedback"
-            children={ 
-            <Buttons 
-            buttons={buttons} 
-            onFeedback={this.clickButton}/>
-            }/>
-       {totalFeedback > 0 ? (
-        <Section 
-        title="Statistic"
-        children={
-            <Statistic 
-        good={this.state.good} 
-        neutral={this.state.neutral} 
-        bad={this.state.bad} 
-        total={totalFeedback} 
-        positivePercentage={this.countPositiveFeedbackPercentage()}
+  return (
+    <div>
+      <Section
+        title="Please leave feedback"
+        children={<Buttons buttons={buttons} onFeedback={clickButton} />}
+      />
+      {totalFeedback > 0 ? (
+        <Section
+          title="Statistic"
+          children={
+            <Statistic
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={totalFeedback}
+              positivePercentage={countPositiveFeedbackPercentage()}
+            />
+          }
         />
-        }/>
-       ) : (
-        <Section title="Statistic" children={`No feedbacck given`}/>
-       )}
-        </div>
-    )
+      ) : (
+        <Section title="Statistic" children={`No feedbacck given`} />
+      )}
+    </div>
+  );
 }
-};
-
-
 
 export default Feedback;
